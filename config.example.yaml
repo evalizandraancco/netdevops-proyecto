@@ -1,0 +1,34 @@
+# Copia este archivo a config.yaml y completa tus datos.
+# config.yaml está en .gitignore: NO lo subas a GitHub (tiene contraseñas y la API Key).
+#
+# Laboratorio virtual (VMware):
+#   VMnet2 20.20.20.0/24 = gestión      VMnet3 30.30.30.0/24 = datos / ataque
+# Laboratorio físico: cambia solo los host (172.23.18.224 / .225) y las credenciales.
+
+cisco:
+  host: 20.20.20.20
+  username: apiadmin
+  password: CAMBIAME
+  control_protocol: restconf          # restconf | netconf (para apagar/habilitar)
+  # Interfaces que nunca se apagan solas (gestión e internet del CSR):
+  protected_interfaces: [GigabitEthernet1, GigabitEthernet3]
+  # Capacidad (bps) para la fórmula en vez de la velocidad reportada (opcional).
+  # Útil en la demo: con 100 Mbps basta ~70 Mbps de tráfico para pasar el umbral.
+  capacity_override_bps:
+    GigabitEthernet2: 100000000
+
+forti:
+  host: 20.20.20.30
+  api_key: CAMBIAME                   # o exporta FGT_API_KEY
+  interface: port2                    # en FortiGate-VM, port2 tiene alias wan1
+  display_name: wan1
+  capacity_override_bps: 100000000
+
+monitor:
+  interval_seconds: 5
+  threshold_percent: 70
+  auto_mitigate: true
+
+paths:
+  log_file: logs/events.log
+  state_file: state/mitigated.json
